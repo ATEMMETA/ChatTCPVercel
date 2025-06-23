@@ -76,8 +76,7 @@
     "react-native-tcp-socket": "^6.0.6",
     "upgrade": "^1.1.0",
     "zod": "^3.24.1",
-    "zustand": "^4.5.5",
-    "zlib": "^1.0.5"
+    "zustand": "^4.5.5"
   },
   "devDependencies": {
     "@babel/core": "^7.24.7",
