@@ -14,7 +14,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@expo/metro-runtime": "~3.2.3",
+    "@expo/metro-runtime": "^3.2.1",
     "babel-plugin-inline-import": "^3.0.0",
     "babel-plugin-module-resolver": "^5.0.0",
     "expo": "~52.0.46",
