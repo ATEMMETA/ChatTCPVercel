@@ -30,7 +30,16 @@ module.exports = (async () => {
       extraNodeModules: {
         '@expo/metro-runtime': path.resolve(__dirname, 'node_modules/@expo/metro-runtime')
       },
-      unstable_enablePackageExports: true
+      unstable_enablePackageExports: true,
+      resolveRequest: (context, moduleName, platform) => {
+        if (moduleName === '@expo/metro-runtime') {
+          return {
+            filePath: path.resolve(__dirname, 'node_modules/@expo/metro-runtime/index.js'),
+            type: 'sourceFile'
+          };
+        }
+        return context.resolveRequest(context, moduleName, platform);
+      }
     },
     maxWorkers: 2,
     resetCache: true
