@@ -1,4 +1,3 @@
-// vercel.json
 {
   "framework": "react-native",
   "buildCommand": "npx expo export -p web",
