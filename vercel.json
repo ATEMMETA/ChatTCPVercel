@@ -1,7 +1,14 @@
 {
-  "framework": "react-native",
-  "buildCommand": "npx expo export -p web",
-  "outputDirectory": "dist",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist",
+        "buildCommand": "npx expo export -p web"
+      }
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
