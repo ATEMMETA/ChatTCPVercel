@@ -29,7 +29,8 @@ module.exports = (async () => {
       sourceExts: ['jsx', 'js', 'ts', 'tsx', 'cjs'],
       extraNodeModules: {
         '@expo/metro-runtime': path.resolve(__dirname, 'node_modules/@expo/metro-runtime')
-      }
+      },
+      unstable_enablePackageExports: true
     },
     maxWorkers: 2,
     resetCache: true
