@@ -1,4 +1,3 @@
-// app.config.js
 module.exports = {
   expo: {
     name: "ChatTCP-Web",
@@ -10,11 +9,10 @@ module.exports = {
     web: {
       bundler: "metro",
       output: "static",
-      favicon: "./assets/images/adaptive-icon.png"
+      favicon: "./assets/favicon.png"
     },
     plugins: [
       "expo-router",
-      "expo-sqlite",
       ["expo-build-properties", {}]
     ],
     experiments: {
