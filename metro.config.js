@@ -1,4 +1,6 @@
+// metro.config.js
 const { getDefaultConfig } = require('expo/metro-config');
+const path = require('path');
 
 module.exports = (async () => {
   const config = await getDefaultConfig(__dirname);
@@ -24,7 +26,10 @@ module.exports = (async () => {
     },
     resolver: {
       ...config.resolver,
-      sourceExts: ['jsx', 'js', 'ts', 'tsx', 'cjs']
+      sourceExts: ['jsx', 'js', 'ts', 'tsx', 'cjs'],
+      extraNodeModules: {
+        '@expo/metro-runtime': path.resolve(__dirname, 'node_modules/@expo/metro-runtime')
+      }
     },
     maxWorkers: 2,
     resetCache: true
