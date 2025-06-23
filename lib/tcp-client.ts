@@ -1,12 +1,18 @@
+// lib/tcp-client.ts
 import TcpSocket from 'react-native-tcp-socket';
+import { deflate, inflate } from 'zlib'; // Use Node.js built-in zlib
+import { promisify } from 'util';
 
-interface Request {
+const deflateAsync = promisify(deflate);
+const inflateAsync = promisify(inflate);
+
+export interface Request {
   model: string;
   prompt: string;
   lora?: string;
 }
 
-interface Response {
+export interface Response {
   output?: string;
   error?: string;
 }
@@ -22,15 +28,21 @@ export class TcpClient {
   }
 
   async send(request: Request): Promise<Response> {
-    return new Promise((resolve, reject) => {
-      this.socket.write(JSON.stringify(request) + '\n');
-      this.socket.once('data', (data: Buffer) => {
-        try {
-          resolve(JSON.parse(data.toString()));
-        } catch (error) {
-          reject(error);
-        }
-      });
+    return new Promise(async (resolve, reject) => {
+      try {
+        const compressed = await deflateAsync(Buffer.from(JSON.stringify(request)));
+        this.socket.write(compressed);
+        this.socket.once('data', async (data: Buffer) => {
+          try {
+            const decompressed = await inflateAsync(data);
+            resolve(JSON.parse(decompressed.toString()));
+          } catch (error) {
+            reject(error);
+          }
+        });
+      } catch (error) {
+        reject(error);
+      }
     });
   }
 
@@ -40,15 +52,9 @@ export class TcpClient {
 }
 
 export async function sendPrompt(model: string, prompt: string, lora?: string): Promise<string> {
-  const client = new TcpClient();
-  try {
-    // Use a mock server or cloud-hosted TCP server for testing
-    await client.connect('127.0.0.1', 8080); // Replace with cloud server later
-    const response = await client.send({ model, prompt, lora });
-    client.disconnect();
-    if (response.error) throw new Error(response.error);
-    return response.output || '';
-  } catch (error) {
-    throw new Error(`TCP Error: ${error.message}`);
-  }
-      }
+  const request: Request = { model, prompt, lora };
+  const compressed = await deflateAsync(Buffer.from(JSON.stringify(request)));
+  console.log(`Original size: ${JSON.stringify(request).length}, Compressed size: ${compressed.length}`);
+  const decompressed = await inflateAsync(compressed);
+  return JSON.parse(decompressed.toString()).prompt; // Mock response
+}
