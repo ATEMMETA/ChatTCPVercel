@@ -1,3 +1,4 @@
+// app.config.js
 module.exports = {
   expo: {
     name: "ChatTCP-Web",
